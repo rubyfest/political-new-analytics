@@ -1,23 +1,59 @@
 import requests
 from bs4 import BeautifulSoup
 from sklearn.feature_extraction.text import CountVectorizer
+import os
+import pickle
 import get_site
+import cache_saves
 
 fox_political_url='https://www.foxnews.com/politics'
 fox_urls=get_site.get_fox_articles(fox_political_url)
 cbs_political_url='https://www.cbsnews.com/feature/election-2024/2/'
 cbs_urls=get_site.get_cbs_articles(cbs_political_url)
 
+print('Length of fox and cbs urls, respectively before opening cache:',len(fox_urls),len(cbs_urls))
+
+fox_old_urls=cache_saves.open_list('fox_urls')
+cbs_old_urls=cache_saves.open_list('cbs_urls')
+fox_urls=fox_old_urls+fox_urls
+fox_urls=list(set(fox_urls))
+cbs_urls=cbs_old_urls+cbs_urls
+cbs_urls=list(set(cbs_urls))
+
 fox_articles=[]
 cbs_articles=[]
+fox_sites=[]
+cbs_sites=[]
+
 for url in fox_urls:
     if get_site.get_fox_site(url) != None:
         fox_articles.append(get_site.get_fox_site(url))
+        fox_sites.append(url)
 for url in cbs_urls:
     if get_site.get_cbs_site(url) != None:
         cbs_articles.append(get_site.get_cbs_site(url))
-print(len(fox_articles))
-print(len(cbs_articles))
+        cbs_sites.append(url)
+
+fox_urls=fox_sites
+cbs_urls=cbs_sites
+
+print('Length of fox and cbs urls, respectively after opening cache:',len(fox_urls),len(cbs_urls))
+
+cache_saves.save_list(fox_urls, 'fox_urls')
+cache_saves.save_list(cbs_urls, 'cbs_urls')
+
+
+
+
+
+
+
+
+
+
+
+
+
 '''
 # Send a GET request to the URL
 response = requests.get(url)

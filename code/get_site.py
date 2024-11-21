@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
+import pytz
 
 def check_keywords(article_content):
     keywords = ["trump", "harris"]
@@ -18,7 +20,14 @@ def get_fox_site(url: str):
 
         # Extract the title
         #title = soup.find('h1').get_text()
-
+        date=soup.find('time')
+        if date is not None:
+            date = date.get_text()
+            date = date[:date.find(' E')].strip().strip('Updated on:  ')
+            date=datetime.strptime(date, "%B %d, %Y %I:%M%p")
+            reference_date = datetime(2024, 11, 5, 15, 0)
+            if date > reference_date:
+                return None
         # Extract the article content
         content = []
         for paragraph in soup.find_all('p'):
@@ -51,8 +60,14 @@ def get_cbs_site(url: str):
         # Parse the HTML content
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Extract the title
-        title = soup.find('h1').get_text()
+        date = soup.find('time')
+        if date is not None:
+            date = date.get_text()
+            date = date[:date.find(' E')].strip('Updated on:  ')
+            date=datetime.strptime(date, "%B %d, %Y / %I:%M %p")
+            reference_date = datetime(2024, 11, 5, 15, 0)
+            if date > reference_date:
+                return None
 
         # Extract the article content
         content = []
@@ -85,7 +100,6 @@ def get_fox_articles(url):
     if response.status_code == 200:
         # Parse the HTML content
         soup = BeautifulSoup(response.text, 'html.parser')
-
         # Find all article links
         links = []
         for article in soup.find_all('article'):

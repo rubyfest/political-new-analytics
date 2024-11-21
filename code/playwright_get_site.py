@@ -16,13 +16,17 @@ def get_fox_site(playwright: Playwright, url: str) -> str:
     for link in links:
         link_text.append(link.inner_text())
     article=[]
-    
+    print('text' , len(link_text))
     for paragraph in article_text[1:-1]:
         text=paragraph.inner_text().strip()
         if text == link_text[link_count]:
-            link_count+=1
+            if link_count == len(link_text)-1:
+                pass
+            else:
+                print('link count:',link_count)
+                link_count+=1
         elif text == 'CLICK HERE TO GET THE FOX NEWS APP':
-            link_count+=1
+            pass
         else:
             article.append(text)
     return ' '.join(article)

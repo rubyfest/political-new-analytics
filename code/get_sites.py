@@ -39,8 +39,8 @@ cbs_urls=cbs_sites
 
 print('Length of fox and cbs urls, respectively after opening cache:',len(fox_urls),len(cbs_urls))
 
-cache_saves.save_list(fox_urls, 'fox_urls')
-cache_saves.save_list(cbs_urls, 'cbs_urls')
+cache_saves.save_list(fox_urls, 'fox_urls_new')
+cache_saves.save_list(cbs_urls, 'cbs_urls_new')
 
 
 

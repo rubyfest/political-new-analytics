@@ -17,7 +17,7 @@ def get_fox_site(url: str):
         soup = BeautifulSoup(response.text, 'html.parser')
 
         # Extract the title
-        title = soup.find('h1').get_text()
+        #title = soup.find('h1').get_text()
 
         # Extract the article content
         content = []

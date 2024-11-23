@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-
+'''
 url='https://www.foxnews.com/politics/trump-taps-former-acting-ag-matthew-whitaker-nato-ambassador'
 response = requests.get(url)
 
@@ -14,3 +14,9 @@ if response.status_code == 200:
     date = date[:date.find(' EST')].strip()
     date=datetime.strptime(date, "%B %d, %Y %I:%M%p")
     print(date)
+'''
+
+a='NATIONAL POLLS SHOW TRUMP, HARRIS IN TIGHT RACE AS ELECTORATE IS UNHAPPY WITH CHOICES'
+b='NATIONAL POLLS SHOW TRUMP, HARRIS IN TIGHT RACE AS ELECTORATE IS UNHAPPY WITH CHOICES'
+if a == b:
+    print('yes')

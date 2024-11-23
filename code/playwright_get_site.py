@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 
 def get_fox_site(playwright: Playwright, url: str) -> str:
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=False, TimeoutError=200000)
     context = browser.new_context()
     page = context.new_page()
     page.goto(url)
@@ -14,26 +14,35 @@ def get_fox_site(playwright: Playwright, url: str) -> str:
     link_count=0
     link_text=[]
     for link in links:
-        link_text.append(link.inner_text())
+        link_text.append(link.inner_text().strip())
     article=[]
-    print('text' , len(link_text))
+    #print('text' , len(link_text))
+    print(link_text)
     for paragraph in article_text[1:-1]:
         text=paragraph.inner_text().strip()
-        if text == link_text[link_count]:
-            if link_count == len(link_text)-1:
+        print(text)
+        print(link_text[link_count])
+        if link_text[link_count] == '\xa0' and link_count < len(link_text)-1:
+            link_count+=1
+            print('added')
+        if link_text[link_count] in text:
+            if 'CLICK HERE TO GET THE FOX NEWS APP' in text:
+                print('done')
+            elif link_count == len(link_text)-1:
                 pass
+                print(link_count)
             else:
-                print('link count:',link_count)
+                #print('link count:',link_count+1,text)
+                print(link_count)
                 link_count+=1
-        elif text == 'CLICK HERE TO GET THE FOX NEWS APP':
-            pass
         else:
             article.append(text)
+    context.close()
+    browser.close()
     return ' '.join(article)
 
     # ---------------------
-    context.close()
-    browser.close()
+
 
 def get_cbs_site(playwright: Playwright, url: str) -> str:
     browser = playwright.chromium.launch(headless=False)
@@ -47,11 +56,11 @@ def get_cbs_site(playwright: Playwright, url: str) -> str:
     for paragraph in article_text[0:]:
         text=paragraph.inner_text().strip()
         article.append(text)
+    context.close()
+    browser.close()
     return ' '.join(article)
 
     # ---------------------
-    context.close()
-    browser.close()
 
 if __name__ == '__main__':
     fox_url = 'https://www.foxnews.com/politics/trump-taps-former-acting-ag-matthew-whitaker-nato-ambassador'

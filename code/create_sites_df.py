@@ -9,9 +9,9 @@ with sync_playwright() as playwright:
     cbs_articles = []
     fox_urls = cache_saves.open_list('fox_urls_new')
     print('Length of fox urls:', len(fox_urls))
-    for url in fox_urls[-2:-1]:
+    for url in fox_urls:
         fox_articles.append(playwright_get_site.get_fox_site(playwright, url))
-        print(url)
+        #print(url)
         #print(playwright_get_site.get_fox_site(playwright, url)[0:10])
         #print('\n\n')
 

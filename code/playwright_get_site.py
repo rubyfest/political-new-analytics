@@ -54,7 +54,7 @@ def get_fox_site(playwright: Playwright, url: str) -> str:
         else:
             article.append(text)
         #print(text)
-    #print(' '.join(article))
+    print(' '.join(article))
     context.close()
     browser.close()
     return ' '.join(article)
@@ -76,6 +76,7 @@ def get_cbs_site(playwright: Playwright, url: str) -> str:
         article.append(text)
     context.close()
     browser.close()
+    print(' '.join(article))
     return ' '.join(article)
 
     # ---------------------

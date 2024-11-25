@@ -18,14 +18,14 @@ def get_fox_site(playwright: Playwright, url: str) -> str:
         link_text.append(link.inner_text().strip())
     article=[]
     #print('text' , len(link_text))
-    print(link_text)
+    #print(link_text)
     for paragraph in article_text[1:-1]:
         text=paragraph.inner_text().strip()
         #print(text)
         #print(link_text[link_count])
         if link_text[link_count] == '\xa0' and link_count < len(link_text)-1:
             link_count+=1
-            print('added')
+            #print('added')
         if link_text[link_count] in text:
             if link_text[link_count] == text:
                 if 'CLICK HERE TO GET THE FOX NEWS APP' in text:
@@ -53,7 +53,7 @@ def get_fox_site(playwright: Playwright, url: str) -> str:
                 article.append(text)
         else:
             article.append(text)
-        print(text)
+        #print(text)
     context.close()
     browser.close()
     return ' '.join(article)

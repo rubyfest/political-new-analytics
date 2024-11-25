@@ -28,10 +28,10 @@ def get_fox_site(playwright: Playwright, url: str) -> str:
             #print('added')
         if link_text[link_count] in text:
             if link_text[link_count] == text:
-                if 'CLICK HERE TO GET THE FOX NEWS APP' in text:
-                    pass
-                    #print('done')
-                elif link_count == len(link_text)-1:
+                #if 'CLICK HERE TO GET THE FOX NEWS APP' in text:
+                #    pass
+                #    #print('done')
+                if link_count == len(link_text)-1:
                     pass
                     #print(link_count)
                 else:
@@ -39,10 +39,10 @@ def get_fox_site(playwright: Playwright, url: str) -> str:
                     #print(link_count)
                     link_count+=1
             else:
-                if 'CLICK HERE TO GET THE FOX NEWS APP' in text:
-                    text=text.replace('CLICK HERE TO GET THE FOX NEWS APP','')
+                #if 'CLICK HERE TO GET THE FOX NEWS APP' in text:
+                    #text=text.replace('CLICK HERE TO GET THE FOX NEWS APP','')
                     #print('done')
-                elif link_count == len(link_text)-1:
+                if link_count == len(link_text)-1:
                     text=text.replace(link_text[link_count],'')
                     #print(link_count)
                 else:
@@ -54,6 +54,7 @@ def get_fox_site(playwright: Playwright, url: str) -> str:
         else:
             article.append(text)
         #print(text)
+    #print(' '.join(article))
     context.close()
     browser.close()
     return ' '.join(article)

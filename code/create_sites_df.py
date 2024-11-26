@@ -32,7 +32,7 @@ articles = cbs_articles + fox_articles
 sources = ["CBS"] * len(cbs_articles) + ["Fox"] * len(fox_articles)
 
 # Initialize the CountVectorizer
-vectorizer = CountVectorizer()
+vectorizer = CountVectorizer(stop_words='english')
 
 # Transform the articles into a word count matrix
 word_count_matrix = vectorizer.fit_transform(articles)

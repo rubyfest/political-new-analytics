@@ -7,18 +7,20 @@ from sklearn.feature_extraction.text import CountVectorizer
 with sync_playwright() as playwright:
     fox_articles = []
     cbs_articles = []
+    
     fox_urls = cache_saves.open_list('fox_urls_new')
     print('Length of fox urls:', len(fox_urls))
     for url in fox_urls:
         fox_articles.append(playwright_get_site.get_fox_site(playwright, url))
-        #print(url)
+        print(url)
         #print(playwright_get_site.get_fox_site(playwright, url)[0:10])
         #print('\n\n')
 
     cbs_urls = cache_saves.open_list('cbs_urls_new')
     print('Length of cbs urls:', len(cbs_urls))
     for url in cbs_urls:
-        cbs_articles.append(playwright_get_site.get_cbs_site(playwright, url))
+        article=playwright_get_site.get_cbs_site(playwright, url)
+        cbs_articles.append(article)
     #    print(url)
     #    print(playwright_get_site.get_cbs_site(playwright, url)[0:10])
     #    print('\n\n')

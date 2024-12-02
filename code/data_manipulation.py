@@ -21,8 +21,8 @@ for col in grouped_df.columns:
 df = df.drop(columns=zero_columns)
 #drops those columns in grouped df
 grouped_df = df.groupby('source').mean()
-top_words_fox = grouped_df.T.sort_values('Fox', ascending=False).head(10)
-top_words_cbs = grouped_df.T.sort_values('CBS', ascending=False).head(10)
+top_words_fox = grouped_df.T.sort_values('Fox', ascending=False)
+top_words_cbs = grouped_df.T.sort_values('CBS', ascending=False)
 
 # Calculate row-wise total word counts
 row_sums = df.drop(columns=['source']).sum(axis=1)
@@ -33,13 +33,13 @@ proportion_df['source'] = df['source']
 # Group by source and calculate the mean proportions
 grouped_proportion_df = proportion_df.groupby('source').mean()
 # Sort the proportions by source
-top_words_fox_proportion = grouped_proportion_df.T.sort_values('Fox', ascending=False).head(10)
-top_words_cbs_proportion = grouped_proportion_df.T.sort_values('CBS', ascending=False).head(10)
+top_words_fox_proportion = grouped_proportion_df.T.sort_values('Fox', ascending=False)
+top_words_cbs_proportion = grouped_proportion_df.T.sort_values('CBS', ascending=False)
 
 #compares when words are used significantly more in one source than the other
 prop_diff = grouped_proportion_df.div(grouped_proportion_df.sum(axis=0), axis=1)
-top_prop_diff_fox = prop_diff.T.sort_values('Fox', ascending=False).head(10)
-top_prop_diff_cbs = prop_diff.T.sort_values('CBS', ascending=False).head(10)
+top_prop_diff_fox = prop_diff.T.sort_values('Fox', ascending=False)
+top_prop_diff_cbs = prop_diff.T.sort_values('CBS', ascending=False)
 
 #saving dfs to cache
 cache_saves.save_df(top_words_fox, 'top_words_fox')

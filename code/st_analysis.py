@@ -2,7 +2,9 @@ import pandas as pd
 import cache_saves
 import streamlit as st
 import matplotlib.pyplot as plt
-import seaborn as sns
+from sklearn.model_selection import cross_val_predict
+from sklearn.metrics import classification_report
+from sklearn.ensemble import GradientBoostingClassifier
 
 # Load data
 top_words_fox = cache_saves.open_df('top_words_fox')
@@ -102,3 +104,53 @@ series6.set_xlabel('Word')
 series6.set_xticklabels(series6.get_xticklabels(), rotation=45)
 series6.legend(title='Source', fontsize=12)
 col2.pyplot(figure6)
+
+st.title('Gradient Boosting Classifier')
+y=df['source']
+X=df.drop(columns=['source'])
+
+st.subheader(':grey[Algorithm Arguments:]')
+st.write(':violet[n_estimators: 50]')
+st.write(':violet[max_depth: 3]')
+st.write(':violet[min_samples_split: 5]')
+st.write(':violet[min_samples_leaf: 1]')
+st.write(':violet[random_state: 42]')
+
+final_gb_clf = GradientBoostingClassifier(n_estimators=50, max_depth=3, min_samples_split=5, min_samples_leaf=1, random_state=42)
+pred = cross_val_predict(estimator=final_gb_clf, X=X, y=y, cv=5)
+report = classification_report(y, pred, output_dict=True)
+report = pd.DataFrame(report).T
+st.dataframe(report)
+
+final_gb_clf.fit(X, y)
+
+feature_importances = final_gb_clf.feature_importances_
+
+# Get the names of the features
+feature_names = list(X.columns)
+
+# Create a dictionary mapping feature names to importance scores
+feature_importance_dict = dict(zip(feature_names, feature_importances))
+
+# Sort the dictionary by importance score in descending order
+sorted_feature_importance = sorted(feature_importance_dict.items(), key=lambda x: x[1], reverse=True)
+
+# Select only the top 10 features
+top_features = [x[0] for x in sorted_feature_importance[:10]]
+top_importances = [x[1] for x in sorted_feature_importance[:10]]
+
+# Print top 10 feature importance scores
+st.subheader(":grey[Most Important Features:]")
+st.caption(':violet[Permutation Importance]')
+feature_importance_df=pd.DataFrame(sorted_feature_importance, columns=['Feature', 'Importance'])
+st.dataframe(feature_importance_df)
+
+top_feature_importance_df = feature_importance_df.head(10)
+
+# Plot top 10 feature importance scores
+figure7, series7 = plt.subplots()
+top_feature_importance_df.plot(ax=series7, figsize=(10, 6), x='Feature', y='Importance', kind='barh', color='purple')   
+series7.set_xlabel('Feature Importance')
+series7.set_ylabel('Feature')
+series7.set_title('Top 10 Most Important Features in Gradient Boosting')
+st.pyplot(figure7)

@@ -17,6 +17,8 @@ df=cache_saves.open_df('filtered_final_df')
 
 
 st.title('Comparing Language in Fox and CBS Election Articles')
+st.caption('This app compares the language used in election articles from Fox News and CBS News. The goal is to see specific words used more frequently in one source than the other.')
+st.caption('Fox is known to be more :conservative, while CBS is known to be more liberal. Although there is not enough data or source companies to generalize how a left leaning or right leaning source differs in language, this app will show the differences between Fox and CBS, looking at over 50 articles of each.')
 st.subheader(':grey[Count of top words:]',divider='grey')
 col1, col2 = st.columns(2)
 col1.caption(':red[FOX]')
@@ -106,6 +108,7 @@ series6.legend(title='Source', fontsize=12)
 col2.pyplot(figure6)
 
 st.title('Gradient Boosting Classifier')
+st.caption('Having tested different machine learning algorithms (decision tree, random forest, gradient boosting), the Gradient Boosting Classifier seen below is the top scoring model.')
 y=df['source']
 X=df.drop(columns=['source'])
 
@@ -141,7 +144,7 @@ top_importances = [x[1] for x in sorted_feature_importance[:10]]
 
 # Print top 10 feature importance scores
 st.subheader(":grey[Most Important Features:]")
-st.caption(':violet[Permutation Importance]')
+st.caption(':violet[Permutation Importance] :grey[(How much worse the model gets with the removal of each feature)]')
 feature_importance_df=pd.DataFrame(sorted_feature_importance, columns=['Feature', 'Importance'])
 st.dataframe(feature_importance_df)
 

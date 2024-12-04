@@ -46,6 +46,7 @@ if word_search:
     if word_search in df.columns:
         searched_df=df[[word_search, 'source']]
         searched_df=searched_df.rename(columns={word_search: 'word count'})
+        searched_df=searched_df.sort_values('word count', ascending=False)
         col1.dataframe(searched_df)
         word_counts=round(top_words_fox.loc[word_search, 'Fox'],4), round(top_words_cbs.loc[word_search, 'CBS'],4)
         word_proportions=round(top_words_fox_proportion.loc[word_search, 'Fox'],6), round(top_words_cbs_proportion.loc[word_search, 'CBS'],6)

@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import cross_val_predict
 from sklearn.metrics import classification_report
 from sklearn.ensemble import GradientBoostingClassifier
+st.set_page_config(layout="wide")
 
 # Load data
 top_words_fox = cache_saves.open_df('top_words_fox')
@@ -18,7 +19,7 @@ df=cache_saves.open_df('filtered_final_df')
 
 st.title('Comparing Language in Fox and CBS Election Articles')
 st.caption('This app compares the language used in election articles from Fox News and CBS News. The goal is to see specific words used more frequently in one source than the other.')
-st.caption('Fox is known to be more :conservative, while CBS is known to be more liberal. Although there is not enough data or source companies to generalize how a left leaning or right leaning source differs in language, this app will show the differences between Fox and CBS, looking at over 50 articles of each.')
+st.caption('Fox is known to be more conservative, while CBS is known to be more liberal. Although there is not enough data or source companies to generalize how a left leaning or right leaning source differs in language, this app will show the differences between Fox and CBS, looking at over 50 articles of each.')
 st.subheader(':grey[Count of top words:]',divider='grey')
 col1, col2 = st.columns(2)
 col1.caption(':red[FOX]')
@@ -137,19 +138,20 @@ st.title('Gradient Boosting Classifier')
 st.caption('Having tested different machine learning algorithms (decision tree, random forest, gradient boosting), the Gradient Boosting Classifier seen below is the top scoring model.')
 y=df['source']
 X=df.drop(columns=['source'])
-
-st.subheader(':grey[Algorithm Arguments:]')
-st.write(':violet[n_estimators: 50]')
-st.write(':violet[max_depth: 3]')
-st.write(':violet[min_samples_split: 5]')
-st.write(':violet[min_samples_leaf: 1]')
-st.write(':violet[random_state: 42]')
+col1, col2=st.columns(2)
+col1.subheader(':grey[Algorithm Arguments:]')
+col1.write(':violet[n_estimators: 50]')
+col1.write(':violet[max_depth: 3]')
+col1.write(':violet[min_samples_split: 5]')
+col1.write(':violet[min_samples_leaf: 1]')
+col1.write(':violet[random_state: 42]')
 
 final_gb_clf = GradientBoostingClassifier(n_estimators=50, max_depth=3, min_samples_split=5, min_samples_leaf=1, random_state=42)
 pred = cross_val_predict(estimator=final_gb_clf, X=X, y=y, cv=5)
 report = classification_report(y, pred, output_dict=True)
 report = pd.DataFrame(report).T
-st.dataframe(report)
+col2.subheader(':grey[Classification Report:]')
+col2.dataframe(report)
 
 final_gb_clf.fit(X, y)
 
@@ -178,8 +180,9 @@ top_feature_importance_df = feature_importance_df.head(10)
 
 # Plot top 10 feature importance scores
 figure7, series7 = plt.subplots()
-top_feature_importance_df.plot(ax=series7, figsize=(10, 6), x='Feature', y='Importance', kind='barh', color='purple')   
+top_feature_importance_df.plot(ax=series7, figsize=(10, 4), x='Feature', y='Importance', kind='barh', color='purple')   
 series7.set_xlabel('Feature Importance')
 series7.set_ylabel('Feature')
 series7.set_title('Top 10 Most Important Features in Gradient Boosting')
+series7.legend().remove()
 st.pyplot(figure7)

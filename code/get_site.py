@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-import pytz
 
 def check_keywords(article_content):
     keywords = ["trump", "harris"]

@@ -15,7 +15,7 @@ df = cache_saves.open_df('filtered_final_df')
 y=df['source']
 X=df.drop(columns=['source'])
 y_train, y_test, X_train, X_test = train_test_split(y, X, test_size=0.4, random_state=42)
-'''
+
 tree_clf=DecisionTreeClassifier(random_state=42)
 tree_clf.fit(X_train, y_train)
 y_pred=tree_clf.predict(X_test)
@@ -82,7 +82,7 @@ grid_search = GridSearchCV(classifier, param_grid, cv=5, scoring='f1_macro')
 grid_search.fit(X, y)
 print("Best Parameters:", grid_search.best_params_)
 print("Best Score:", grid_search.best_score_)
-'''
+
 
 final_gb_clf = GradientBoostingClassifier(n_estimators=50, max_depth=3, min_samples_split=5, min_samples_leaf=1, random_state=42)
 pred = cross_val_predict(estimator=final_gb_clf, X=X, y=y, cv=5)
